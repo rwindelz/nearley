@@ -71,7 +71,7 @@ Label -> "::" _ Name _ "::"
 
 # Names
 # See Section 2.1
-Name -> _name {? isNotKeyword ?}                 {% function(d) {return {'name': d[0]}; } %}
+Name -> _name &{% isNotKeyword %}                {% function(d) {return {'name': d[0]}; } %}
 
 _name ->
       [a-zA-Z_]                                  {% nth(0) %}

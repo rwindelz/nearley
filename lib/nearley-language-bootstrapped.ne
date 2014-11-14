@@ -19,7 +19,7 @@ expr_member ->
       word {% id %}
     | string {% id %}
     | charclass {% id %}
-    | "{" "?" jscode "?" "}"          {% function(d) {return {'predicate': d[2]}; } %}
+    | "&" js                          {% function(d) {return {'predicate': d[1]}; } %}
     | "(" whit? expression+ whit? ")" {% function(d) {return {'subexpression': d[2]} ;} %}
     | expr_member whit? ebnf_modifier {% function(d) {return {'ebnf': d[0], 'modifier': d[2]}; } %}
 
