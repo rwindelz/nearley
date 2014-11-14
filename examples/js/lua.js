@@ -14,6 +14,13 @@ var stmt =           function (type, members) {
                          return function (d) { return {"statement": type,
                                                        "body": members.map(
                                                                    function (n) { return d[n]; })}; };};
+var isNotKeyword =   function (n) {
+                         var keywords = [ "and",       "break",     "do",        "else",      "elseif",
+                                          "end",       "false",     "for",       "function",  "goto",
+                                          "if",        "in",        "local",     "nil",       "not",
+                                          "or",        "repeat",    "return",    "then",      "true",
+                                          "until",     "while"                                        ];
+                         return keywords.indexOf(n) === -1; };
 var grammar = {
     ParserRules: [
     {"name": "Chunk", "symbols": ["_", "Block", "_"], "postprocess":  nth(1) },
@@ -140,7 +147,7 @@ var grammar = {
         return d.join('');
     }},
     {"name": "Label", "symbols": [" string$31", "_", "Name", "_", " string$32"]},
-    {"name": "Name", "symbols": ["_name"], "postprocess":  function(d) {return {'name': d[0]}; } },
+    {"name": "Name", "symbols": ["_name", {"predicate":  isNotKeyword }], "postprocess":  function(d) {return {'name': d[0]}; } },
     {"name": "_name", "symbols": [/[a-zA-Z_]/], "postprocess":  nth(0) },
     {"name": "_name", "symbols": ["_name", /[\w_]/], "postprocess":  function (d) {return d[0] + d[1]; } },
     {"name": "NameList", "symbols": ["Name"], "postprocess":  nth(0) },

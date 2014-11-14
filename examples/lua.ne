@@ -15,6 +15,13 @@ var stmt =           function (type, members) {
                          return function (d) { return {"statement": type,
                                                        "body": members.map(
                                                                    function (n) { return d[n]; })}; };};
+var isNotKeyword =   function (n) {
+                         var keywords = [ "and",       "break",     "do",        "else",      "elseif",
+                                          "end",       "false",     "for",       "function",  "goto",
+                                          "if",        "in",        "local",     "nil",       "not",
+                                          "or",        "repeat",    "return",    "then",      "true",
+                                          "until",     "while"                                        ];
+                         return keywords.indexOf(n) === -1; };
 %}
 
 Chunk -> _ Block _                               {% nth(1) %}
@@ -64,7 +71,7 @@ Label -> "::" _ Name _ "::"
 
 # Names
 # See Section 2.1
-Name -> _name                                    {% function(d) {return {'name': d[0]}; } %}
+Name -> _name {? isNotKeyword ?}                 {% function(d) {return {'name': d[0]}; } %}
 
 _name ->
       [a-zA-Z_]                                  {% nth(0) %}
